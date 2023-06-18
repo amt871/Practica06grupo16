@@ -36,7 +36,7 @@ public class CreacindeunatareasCasosincorrectosTest {
 	  public void setUp() {
 	    // Browser selector
 	    int browser= 0; // 0: firefox, 1: chrome,...
-	    Boolean headless = false;
+	    Boolean headless = true;
 
 	    switch (browser) {
 	    case 0:  // firefox
@@ -121,7 +121,5 @@ public class CreacindeunatareasCasosincorrectosTest {
 			List<WebElement> elements = driver.findElements(By.id("CreatedDate-error"));
 			assert (elements.size() > 0);
 		}
-		// 13 | close | |
-		driver.close();
 	}
 }

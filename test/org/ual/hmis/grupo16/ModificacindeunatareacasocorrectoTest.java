@@ -33,7 +33,7 @@ public class ModificacindeunatareacasocorrectoTest {
   public void setUp() {
     // Browser selector
     int browser= 0; // 0: firefox, 1: chrome,...
-    Boolean headless = false;
+    Boolean headless = true;
 
     switch (browser) {
     case 0:  // firefox
@@ -134,8 +134,10 @@ public class ModificacindeunatareacasocorrectoTest {
     // 6 | click | id=CreatedDate | 
     driver.findElement(By.id("CreatedDate")).click();
     // 7 | type | id=CreatedDate | 2023-06-03
-    driver.findElement(By.id("CreatedDate")).clear();
-    driver.findElement(By.id("CreatedDate")).sendKeys("03-06-2023");
+//    driver.findElement(By.id("CreatedDate")).clear();
+//    driver.findElement(By.id("CreatedDate")).sendKeys("03-06-2023");
+    JavascriptExecutor jse = (JavascriptExecutor)driver;
+    jse.executeScript("document.getElementById('CreatedDate').value='2023-06-03';");
     // 8 | assertValue | id=CreatedDate | 2023-06-03
     {
       String value = driver.findElement(By.id("CreatedDate")).getAttribute("value");
