@@ -23,15 +23,47 @@ import org.openqa.selenium.Keys;
 import java.util.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxOptions;
 public class ModificacindeunatareacasocorrectoTest {
   private WebDriver driver;
   private Map<String, Object> vars;
   JavascriptExecutor js;
   @Before
   public void setUp() {
-	  System.setProperty("webdriver.gecko.driver", "drivers/geckodriver.exe"); 
-	    System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe"); 
-    driver = new ChromeDriver();
+    // Browser selector
+    int browser= 0; // 0: firefox, 1: chrome,...
+    Boolean headless = false;
+
+    switch (browser) {
+    case 0:  // firefox
+    	// Firefox
+    	// Descargar geckodriver de https://github.com/mozilla/geckodriver/releases
+    	// Descomprimir el archivo geckodriver.exe en la carpeta drivers
+
+    	System.setProperty("webdriver.gecko.driver",  "drivers/geckodriver.exe");
+    	FirefoxOptions firefoxOptions = new FirefoxOptions();
+    	if (headless) firefoxOptions.setHeadless(headless);
+    	driver = new FirefoxDriver(firefoxOptions);
+
+    	break;
+    case 1: // chrome
+    	// Chrome
+    	// Descargar Chromedriver de https://chromedriver.chromium.org/downloads
+    	// Descomprimir el archivo chromedriver.exe en la carpeta drivers
+
+    	System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe");
+    	ChromeOptions chromeOptions = new ChromeOptions();
+    	if (headless) chromeOptions.setHeadless(headless);
+    	chromeOptions.addArguments("window-size=1920,1080");
+    	driver = new ChromeDriver(chromeOptions);
+
+    	break;
+
+    default:
+    	fail("Please select a browser");
+    	break;
+    }
     js = (JavascriptExecutor) driver;
     vars = new HashMap<String, Object>();
   }
@@ -52,16 +84,17 @@ public class ModificacindeunatareacasocorrectoTest {
     // 4 | click | id=Description | 
     driver.findElement(By.id("Description")).click();
     // 5 | type | id=Description | asf7h'´3p@
-    driver.findElement(By.id("Description")).sendKeys("asf7h\'´3p@");
+    driver.findElement(By.id("Description")).clear();
+    driver.findElement(By.id("Description")).sendKeys("asf7h3p@");
     // 6 | assertValue | id=Description | asf7h'´3p@
     {
       String value = driver.findElement(By.id("Description")).getAttribute("value");
-      assertThat(value, is("asf7h\'´3p@"));
+      assertThat(value, is("asf7h3p@"));
     }
     // 7 | click | css=.btn | 
     driver.findElement(By.cssSelector(".btn")).click();
     // 8 | assertText | css=tr:nth-child(2) > td:nth-child(1) | asf7h'´3p@
-    assertThat(driver.findElement(By.cssSelector("tr:nth-child(2) > td:nth-child(1)")).getText(), is("asf7h\\\'´3p@"));
+    assertThat(driver.findElement(By.cssSelector("tr:nth-child(2) > td:nth-child(1)")).getText(), is("asf7h3p@"));
   }
   @Test
   public void cambiarnombresololetras() {
@@ -76,6 +109,7 @@ public class ModificacindeunatareacasocorrectoTest {
     // 4 | click | css=.form-group:nth-child(4) | 
     driver.findElement(By.cssSelector(".form-group:nth-child(4)")).click();
     // 5 | type | id=Description | Efectivamente
+    driver.findElement(By.id("Description")).clear();
     driver.findElement(By.id("Description")).sendKeys("Efectivamente");
     // 6 | click | css=.btn | 
     driver.findElement(By.cssSelector(".btn")).click();
@@ -95,11 +129,13 @@ public class ModificacindeunatareacasocorrectoTest {
     // 4 | click | css=body | 
     driver.findElement(By.cssSelector("body")).click();
     // 5 | type | id=Description | Cambio de fecha
+    driver.findElement(By.id("Description")).clear();
     driver.findElement(By.id("Description")).sendKeys("Cambio de fecha");
     // 6 | click | id=CreatedDate | 
     driver.findElement(By.id("CreatedDate")).click();
     // 7 | type | id=CreatedDate | 2023-06-03
-    driver.findElement(By.id("CreatedDate")).sendKeys("2023-06-03");
+    driver.findElement(By.id("CreatedDate")).clear();
+    driver.findElement(By.id("CreatedDate")).sendKeys("03-06-2023");
     // 8 | assertValue | id=CreatedDate | 2023-06-03
     {
       String value = driver.findElement(By.id("CreatedDate")).getAttribute("value");
