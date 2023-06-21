@@ -33,7 +33,7 @@ public class ModificacindeunatareacasocorrectoTest {
   public void setUp() {
     // Browser selector
     int browser= 0; // 0: firefox, 1: chrome,...
-    Boolean headless = true;
+    Boolean headless = false;
 
     switch (browser) {
     case 0:  // firefox
